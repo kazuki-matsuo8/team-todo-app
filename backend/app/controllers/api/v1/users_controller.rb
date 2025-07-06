@@ -1,4 +1,6 @@
 class Api::V1::UsersController < ApplicationController
+  before_action :authenticate, only: %i[update]
+
   def create
     @user = User.new(user_params)
     if @user.save
@@ -6,6 +8,14 @@ class Api::V1::UsersController < ApplicationController
     else
       render json: { status: 'ERROR', message: 'ユーザー登録に失敗しました', data: @user.errors }, status: :unprocessable_entity
     end
+  end
+
+  def update
+   if @current_user.update(user_params)
+     render json: {user: {name: @current_user.name}}
+   else 
+     render json: {errors: {body: @current_user.errors}}, status: :unprocessable_entity
+   end
   end
 
   def show
