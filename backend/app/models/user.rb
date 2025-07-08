@@ -8,5 +8,5 @@ class User < ApplicationRecord
                    format: { with: VALID_EMAIL_REGEX }
   validates :password, presence: true,
                        length: { minimum: 8 }
-
+  has_many :created_tasks, class_name: 'Task', foreign_key: 'creator_id'
 end
