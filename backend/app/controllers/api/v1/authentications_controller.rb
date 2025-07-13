@@ -10,9 +10,5 @@ class Api::V1::AuthenticationsController < ApplicationController
       render status: :unauthorized
     end
   end
-  # ログアウト
-  def destroy
-    session.delete(:user_id)
-    render json: { status: 200, logged_out: true, message: 'ログアウトしました' }
-  end
+  
 end
