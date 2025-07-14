@@ -1,5 +1,4 @@
 class Api::V1::AuthenticationsController < ApplicationController
-  include ActionController::Cookies
   # ログイン
   def create
     user = User.find_by(email: params[:user][:email].downcase)

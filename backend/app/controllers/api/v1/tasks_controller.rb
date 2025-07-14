@@ -16,9 +16,28 @@ class Api::V1::TasksController < ApplicationController
     end
   end
 
+  def update
+    @task = @current_user.created_tasks.find(params[:id])
+    if @task.update
+      render json: { status: 'SUCCESS', data: @task }, status: :ok
+    else
+      render json: { status: 'ERROR', data: @task.errors }, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @task = @current_user.created_tasks.find(params[:id])
+    @task.destroy
+  end
+
+  def show
+    @task = @current_user.created_tasks.find(params[:id])
+    render json: { status: 'SUCCESS',data: @task }, status: :ok
+  end
+
   private
 
   def task_params
-    params.require(:task).permit(:title, :content, :category)
+    params.require(:task).permit(:title, :content, :category, :status)
   end
 end
