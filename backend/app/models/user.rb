@@ -6,7 +6,7 @@ class User < ApplicationRecord
   validates :email, presence: true,
                    uniqueness: true,
                    format: { with: VALID_EMAIL_REGEX }
-  validates :password, presence: true,
+  validates :password, allow_nil: true,
                        length: { minimum: 8 }
-  has_many :created_tasks, class_name: 'Task', foreign_key: 'creator_id'
+  has_many :created_tasks, class_name: 'Task', foreign_key: 'creator_id', dependent: :destroy
 end
