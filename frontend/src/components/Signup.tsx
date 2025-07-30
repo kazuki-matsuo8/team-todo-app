@@ -1,14 +1,14 @@
 import React from "react";
 import { useState } from "react";
-import { useNavigate, Link } from 'react-router-dom';
-import apiClient from '../api/axios';
+import { useNavigate, Link } from "react-router-dom";
+import apiClient from "../api/axios";
 
-const Signup: React.FC = () => {
+const Signup: React.FC = function () {
   // フォームの入力値を管理するためのstate
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
   // エラーメッセージを管理するためのstate
   const [error, setError] = useState<string | null>(null);
 
@@ -22,13 +22,13 @@ const Signup: React.FC = () => {
 
     // パスワードの一致を確認
     if (password !== passwordConfirmation) {
-      setError('パスワードが一致しません');
+      setError("パスワードが一致しません");
       return;
     }
 
     try {
       // apiClientを使って、バックエンドの/usersエンドポイントにPOSTリクエストを送信
-      await apiClient.post('/users', {
+      await apiClient.post("/users", {
         user: {
           name,
           email,
@@ -37,16 +37,17 @@ const Signup: React.FC = () => {
         },
       });
       // 登録成功後、ログインページに遷移
-      navigate('/login');
+      navigate("/login");
     } catch (err) {
-      setError('登録に失敗しました。メールアドレスが既に使用されている可能性があります。');
+      setError(
+        "登録に失敗しました。メールアドレスが既に使用されている可能性があります。"
+      );
       console.error(err);
     }
   };
 
   return (
     <div>
-      
       <form onSubmit={handleSubmit}>
         <h2 className="title">アカウント新規登録</h2>
         <div>
@@ -88,10 +89,9 @@ const Signup: React.FC = () => {
         <button type="submit">登録</button>
       </form>
       <p>
-        アカウントをお持ちですか？ <Link to="/login">ログイン</Link>
+        アカウントを既にお持ちですか？ <Link to="/login">ログイン</Link>
       </p>
-      {/* エラーがあれば表示 */}
-      <p className="errorMessage">{error || ''}</p>
+      <p className="errorMessage">{error || ""}</p> 
     </div>
   );
 };
