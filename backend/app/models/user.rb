@@ -8,13 +8,18 @@ class User < ApplicationRecord
                    format: { with: VALID_EMAIL_REGEX }
   validates :password, allow_nil: true,
                        length: { minimum: 8 }
-  has_many :created_tasks, class_name: 'Task', foreign_key: 'creator_id', dependent: :destroy
+  has_many :created_tasks, class_name: "Task", foreign_key: "creator_id", dependent: :destroy
+
+  # チーム
+  has_many :created_teams, class_name: "Team", foreign_key: "creator_id", dependent: :destroy
+  has_many :team_members, dependent: :destroy
+  has_many :teams, through: :team_members
 
   # パスワードリセット用のトークンを生成
   def generate_password_reset_token
     self.reset_password_token = SecureRandom.urlsafe_base64
     self.reset_password_sent_at = Time.zone.now
-    return reset_password_token
+    reset_password_token
   end
   # パスワードリセットトークンの有効期限を確認
   def password_reset_period_valid?
