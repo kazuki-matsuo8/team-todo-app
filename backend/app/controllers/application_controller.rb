@@ -2,12 +2,12 @@ class ApplicationController < ActionController::API
   # ユーザーIDを受け取り、JWT（認証トークン）を生成して返すメソッド
   def create_token(user_id)
     # トークンに含める情報（ペイロード）を設定。ユーザーIDと有効期限（14日後）を含める
-    payload = {user_id: user_id, exp: (DateTime.current + 14.days).to_i}
+    payload = { user_id: user_id, exp: (DateTime.current + 14.days).to_i }
     # トークンの署名に使う、アプリケーション固有の秘密鍵を取得
     secret_key = Rails.application.credentials.secret_key_base
     # payloadと秘密鍵を使って、JWTを生成（エンコード）
     token = JWT.encode(payload, secret_key)
-    return token
+    token
   end
 
   # リクエストに有効なJWTが含まれているか検証し、ユーザーを認証するメソッド
@@ -37,6 +37,12 @@ class ApplicationController < ActionController::API
   end
 
   def render_unauthorized
-    render json: { errors: 'Unauthorized' }, status: :unauthorized
+    render json: { errors: "Unauthorized" }, status: :unauthorized
+  end
+
+  private
+
+  def current_user
+    @current_user
   end
 end
